@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Copy, AlertTriangle, CheckCircle, ArrowLeft } from "lucide-react";
+import { Copy, AlertTriangle, CheckCircle, ArrowLeft, ChevronDown } from "lucide-react";
 
 const WALLET_ADDRESS = "TJjHua4gE3LH7qGxbqtLRqwqCrASPjqyMC";
 
@@ -14,6 +14,8 @@ const CryptoPayment = () => {
   const [copied, setCopied] = useState(false);
   const [rechargeAmount, setRechargeAmount] = useState(0);
   const [showError, setShowError] = useState(false);
+  const [currency, setCurrency] = useState<"USD" | "EUR">("USD");
+  const [currencyOpen, setCurrencyOpen] = useState(false);
 
   useEffect(() => {
     const raw = sessionStorage.getItem("topup_data");
@@ -69,7 +71,37 @@ const CryptoPayment = () => {
         {/* Amount */}
         <div className="glass-card p-6 text-center">
           <p className="text-muted-foreground text-sm mb-1">Amount to Recharge</p>
-          <p className="text-4xl font-bold text-foreground font-mono">${rechargeAmount.toFixed(2)}</p>
+          <div className="flex items-center justify-center gap-2 mb-1">
+            <p className="text-4xl font-bold text-foreground font-mono">
+              {currency === "USD" ? "$" : "€"}{rechargeAmount.toFixed(2)}
+            </p>
+          </div>
+          {/* Currency selector */}
+          <div className="relative inline-block mt-2 mb-1">
+            <button
+              onClick={() => setCurrencyOpen(!currencyOpen)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted text-foreground text-sm font-medium hover:bg-muted/80 transition-colors"
+            >
+              {currency === "USD" ? "🇺🇸 USD" : "🇪🇺 EUR"}
+              <ChevronDown className="w-3.5 h-3.5" />
+            </button>
+            {currencyOpen && (
+              <div className="absolute top-full left-0 mt-1 w-32 rounded-lg shadow-lg bg-card border border-border z-50 overflow-hidden">
+                <button
+                  onClick={() => { setCurrency("USD"); setCurrencyOpen(false); }}
+                  className={`w-full text-left px-3 py-2 text-sm hover:bg-muted transition-colors ${currency === "USD" ? "bg-muted font-semibold text-foreground" : "text-muted-foreground"}`}
+                >
+                  🇺🇸 USD
+                </button>
+                <button
+                  onClick={() => { setCurrency("EUR"); setCurrencyOpen(false); }}
+                  className={`w-full text-left px-3 py-2 text-sm hover:bg-muted transition-colors ${currency === "EUR" ? "bg-muted font-semibold text-foreground" : "text-muted-foreground"}`}
+                >
+                  🇪🇺 EUR
+                </button>
+              </div>
+            )}
+          </div>
           <p className="text-sm text-muted-foreground mt-2">Send the exact USDT amount</p>
         </div>
 
