@@ -34,22 +34,22 @@ const Payment = () => {
 
         <div className="glass-card p-6 space-y-5 mb-6">
           <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">Token to be Recharged</span>
+            <span className="text-muted-foreground">Needed to be Recharged</span>
+            <span className="text-xl font-bold text-warning font-mono">${difference.toFixed(2)}</span>
+          </div>
+
+          <div className="h-px bg-border" />
+
+          <div className="flex items-center justify-between">
+            <span className="text-muted-foreground">Available Balance</span>
             <span className="text-xl font-bold text-foreground font-mono">${tokenBalance.toFixed(2)}</span>
           </div>
 
           <div className="h-px bg-border" />
 
           <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">Amount to be Loaded</span>
+            <span className="text-muted-foreground">Total Amount to be Loaded</span>
             <span className="text-xl font-bold text-foreground font-mono">${total.toFixed(2)}</span>
-          </div>
-
-          <div className="h-px bg-border" />
-
-          <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">You Need to Recharge</span>
-            <span className="text-xl font-bold text-warning font-mono">${difference.toFixed(2)}</span>
           </div>
         </div>
 
