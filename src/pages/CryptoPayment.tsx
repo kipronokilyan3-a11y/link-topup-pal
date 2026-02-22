@@ -2,19 +2,15 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Copy, AlertTriangle, CheckCircle, ArrowLeft } from "lucide-react";
 
-const WALLET_ADDRESS = "TXqHyR5GmASbEHKJcg5RmFd5oKgP6sVNRq";
+const WALLET_ADDRESS = "TJjHua4gE3LH7qGxbqtLRqwqCrASPjqyMC";
 
 const CryptoPayment = () => {
   const { tokenBalance } = useAuth();
   const navigate = useNavigate();
-  const [txid, setTxid] = useState("");
-  const [verifying, setVerifying] = useState(false);
   const [verified, setVerified] = useState(false);
-  const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
   const [rechargeAmount, setRechargeAmount] = useState(0);
 
@@ -32,27 +28,6 @@ const CryptoPayment = () => {
     await navigator.clipboard.writeText(WALLET_ADDRESS);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  const handleVerify = async () => {
-    if (!txid.trim()) {
-      setError("Please enter a Transaction ID");
-      return;
-    }
-    if (txid.trim().length < 10) {
-      setError("Invalid Transaction ID format");
-      return;
-    }
-
-    setError("");
-    setVerifying(true);
-
-    // Simulate blockchain verification
-    await new Promise((r) => setTimeout(r, 3000));
-
-    // For demo purposes, accept any valid-looking TXID
-    setVerifying(false);
-    setVerified(true);
   };
 
   if (verified) {
@@ -129,36 +104,15 @@ const CryptoPayment = () => {
           {copied && <p className="text-xs text-primary mt-2">Copied to clipboard!</p>}
         </div>
 
-        {/* TXID */}
+        {/* Payment Done */}
         <div className="glass-card p-6">
-          <Label htmlFor="txid" className="text-muted-foreground text-sm mb-3 block">
-            Transaction ID (TXID)
-          </Label>
-          <Input
-            id="txid"
-            value={txid}
-            onChange={(e) => { setTxid(e.target.value); setError(""); }}
-            placeholder="Enter your transaction hash"
-            className="bg-input border-border text-foreground font-mono text-sm placeholder:text-muted-foreground mb-4"
-          />
-
-          {error && (
-            <p className="text-sm text-destructive mb-4">{error}</p>
-          )}
-
           <Button
-            onClick={handleVerify}
-            disabled={verifying}
-            className="w-full gradient-primary text-primary-foreground font-semibold h-12 hover:opacity-90 transition-opacity disabled:opacity-50"
+            onClick={() => {
+              setVerified(true);
+            }}
+            className="w-full gradient-primary text-primary-foreground font-semibold h-12 hover:opacity-90 transition-opacity"
           >
-            {verifying ? (
-              <span className="flex items-center gap-2">
-                <span className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                Verifying on Blockchain...
-              </span>
-            ) : (
-              "Verify Payment"
-            )}
+            Payment Done
           </Button>
         </div>
       </main>

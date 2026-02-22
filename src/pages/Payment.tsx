@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Wallet, ArrowRight, AlertTriangle, CheckCircle } from "lucide-react";
+import { Wallet, ArrowRight } from "lucide-react";
 
 const Payment = () => {
   const { tokenBalance } = useAuth();
@@ -19,8 +19,7 @@ const Payment = () => {
     setTotal(data.total);
   }, [navigate]);
 
-  const difference = total - tokenBalance;
-  const canPayFull = tokenBalance >= total;
+  const difference = Math.max(0, total - tokenBalance);
 
   return (
     <div className="min-h-screen gradient-surface flex items-center justify-center px-4">
@@ -29,90 +28,45 @@ const Payment = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-card border border-border mb-4">
             <Wallet className="w-8 h-8 text-primary" />
           </div>
-          <h2 className="text-2xl font-bold text-foreground">Payment Summary</h2>
-          <p className="text-muted-foreground mt-1">Review your balance and payment</p>
+          <h2 className="text-2xl font-bold text-foreground">Software Recharge</h2>
+          <p className="text-muted-foreground mt-1">Recharge your token balance to proceed</p>
         </div>
 
         <div className="glass-card p-6 space-y-5 mb-6">
-          {/* Available Balance */}
           <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">Available Balance</span>
+            <span className="text-muted-foreground">Available Token Balance</span>
             <span className="text-xl font-bold text-foreground font-mono">${tokenBalance.toFixed(2)}</span>
           </div>
 
           <div className="h-px bg-border" />
 
-          {/* Total Required */}
           <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">Total Required</span>
+            <span className="text-muted-foreground">Needed Balance</span>
             <span className="text-xl font-bold text-foreground font-mono">${total.toFixed(2)}</span>
           </div>
 
           <div className="h-px bg-border" />
 
-          {/* Difference */}
           <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">
-              {canPayFull ? "Remaining After Payment" : "Recharge Needed"}
-            </span>
-            <span className={`text-xl font-bold font-mono ${canPayFull ? "text-primary" : "text-warning"}`}>
-              ${canPayFull ? (tokenBalance - total).toFixed(2) : difference.toFixed(2)}
-            </span>
+            <span className="text-muted-foreground">Recharge Amount</span>
+            <span className="text-xl font-bold text-warning font-mono">${difference.toFixed(2)}</span>
           </div>
         </div>
 
-        {/* Status */}
-        {canPayFull ? (
-          <div className="glass-card p-4 mb-6 border-primary/30 glow-border">
-            <div className="flex items-center gap-3">
-              <CheckCircle className="w-5 h-5 text-primary shrink-0" />
-              <p className="text-sm text-foreground">
-                Sufficient balance. Ready to complete payment.
-              </p>
-            </div>
-          </div>
-        ) : (
-          <div className="glass-card p-4 mb-6 border-warning/30">
-            <div className="flex items-center gap-3">
-              <AlertTriangle className="w-5 h-5 text-warning shrink-0" />
-              <p className="text-sm text-foreground">
-                Insufficient balance. Please recharge <span className="font-mono font-bold text-warning">${difference.toFixed(2)}</span> to proceed.
-              </p>
-            </div>
-          </div>
-        )}
+        <Button
+          className="w-full gradient-primary text-primary-foreground font-semibold h-12 hover:opacity-90 transition-opacity"
+          onClick={() => navigate("/crypto-payment")}
+        >
+          Recharge Now <ArrowRight className="w-4 h-4 ml-2" />
+        </Button>
 
-        {/* Actions */}
-        <div className="space-y-3">
-          {canPayFull ? (
-            <Button
-              className="w-full gradient-primary text-primary-foreground font-semibold h-12 hover:opacity-90 transition-opacity"
-              onClick={() => {
-                // In real app, process payment
-                alert("Payment successful!");
-                sessionStorage.removeItem("topup_data");
-                navigate("/topup");
-              }}
-            >
-              Confirm Payment
-            </Button>
-          ) : (
-            <Button
-              className="w-full gradient-primary text-primary-foreground font-semibold h-12 hover:opacity-90 transition-opacity"
-              onClick={() => navigate("/crypto-payment")}
-            >
-              Recharge via Crypto <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-          )}
-
-          <Button
-            variant="outline"
-            className="w-full border-border text-muted-foreground hover:text-foreground h-11"
-            onClick={() => navigate("/topup")}
-          >
-            Back to Top-Up
-          </Button>
-        </div>
+        <Button
+          variant="outline"
+          className="w-full border-border text-muted-foreground hover:text-foreground h-11 mt-3"
+          onClick={() => navigate("/topup")}
+        >
+          Back to Top-Up
+        </Button>
       </div>
     </div>
   );
