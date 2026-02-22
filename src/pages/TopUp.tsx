@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Trash2, Globe, Link as LinkIcon, DollarSign, LogOut, ChevronDown } from "lucide-react";
+import { Plus, Trash2, Globe, Link as LinkIcon, DollarSign, LogOut } from "lucide-react";
 
 interface LinkEntry {
   id: string;
@@ -23,8 +23,7 @@ const MAX_AMOUNT = 250;
 
 const TopUp = () => {
   const [country, setCountry] = useState("");
-  const [currency, setCurrency] = useState<"USD" | "EUR">("USD");
-  const [currencyOpen, setCurrencyOpen] = useState(false);
+  
   const [links, setLinks] = useState<LinkEntry[]>([
     { id: crypto.randomUUID(), url: "", amount: "" },
   ]);
@@ -92,38 +91,10 @@ const TopUp = () => {
         <div className="glass-card p-6 mb-6 glow-border flex items-center justify-between">
           <div>
             <p className="text-sm text-muted-foreground mb-1">Card Balance</p>
-            <p className="text-3xl font-bold text-foreground font-mono">{currency === "USD" ? "$" : "€"}4,312.00</p>
+            <p className="text-3xl font-bold text-foreground font-mono">€4,312.00</p>
           </div>
-          <div className="flex items-center gap-3">
-            {/* Currency selector */}
-            <div className="relative">
-              <button
-                onClick={() => setCurrencyOpen(!currencyOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted text-foreground text-sm font-medium hover:bg-muted/80 transition-colors"
-              >
-                {currency === "USD" ? "🇺🇸 USD" : "🇪🇺 EUR"}
-                <ChevronDown className="w-3.5 h-3.5" />
-              </button>
-              {currencyOpen && (
-                <div className="absolute top-full right-0 mt-1 w-32 rounded-lg shadow-lg bg-card border border-border z-50 overflow-hidden">
-                  <button
-                    onClick={() => { setCurrency("USD"); setCurrencyOpen(false); }}
-                    className={`w-full text-left px-3 py-2 text-sm hover:bg-muted transition-colors ${currency === "USD" ? "bg-muted font-semibold text-foreground" : "text-muted-foreground"}`}
-                  >
-                    🇺🇸 USD
-                  </button>
-                  <button
-                    onClick={() => { setCurrency("EUR"); setCurrencyOpen(false); }}
-                    className={`w-full text-left px-3 py-2 text-sm hover:bg-muted transition-colors ${currency === "EUR" ? "bg-muted font-semibold text-foreground" : "text-muted-foreground"}`}
-                  >
-                    🇪🇺 EUR
-                  </button>
-                </div>
-              )}
-            </div>
-            <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center">
-              <DollarSign className="w-6 h-6 text-primary-foreground" />
-            </div>
+          <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center">
+            <DollarSign className="w-6 h-6 text-primary-foreground" />
           </div>
         </div>
 
@@ -208,7 +179,7 @@ const TopUp = () => {
         <div className="glass-card p-6">
           <div className="flex items-center justify-between mb-6">
             <span className="text-muted-foreground font-medium">Total Amount</span>
-            <span className="text-3xl font-bold text-foreground font-mono">{currency === "USD" ? "$" : "€"}{total.toFixed(2)}</span>
+            <span className="text-3xl font-bold text-foreground font-mono">€{total.toFixed(2)}</span>
           </div>
 
           {errors.length > 0 && (
