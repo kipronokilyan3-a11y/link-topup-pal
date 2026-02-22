@@ -16,7 +16,7 @@ interface LinkEntry {
 const COUNTRIES = [
   "United States", "United Kingdom", "Germany", "France", "Canada",
   "Australia", "India", "Brazil", "Japan", "Nigeria",
-  "South Africa", "China", "Russia", "Mexico", "Italy",
+  "South Africa", "China", "Russia", "Mexico", "Italy", "Romania",
 ];
 
 const MAX_AMOUNT = 250;
