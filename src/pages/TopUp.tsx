@@ -86,6 +86,17 @@ const TopUp = () => {
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-8">
+        {/* Balance Card */}
+        <div className="glass-card p-6 mb-6 glow-border flex items-center justify-between">
+          <div>
+            <p className="text-sm text-muted-foreground mb-1">Card Balance</p>
+            <p className="text-3xl font-bold text-foreground font-mono">$4,312.00</p>
+          </div>
+          <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center">
+            <DollarSign className="w-6 h-6 text-primary-foreground" />
+          </div>
+        </div>
+
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-foreground">New Top-Up</h2>
           <p className="text-muted-foreground mt-1">Add your links and specify amounts</p>
