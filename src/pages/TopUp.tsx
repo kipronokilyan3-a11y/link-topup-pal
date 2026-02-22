@@ -63,12 +63,11 @@ const TopUp = () => {
 
   const handleSubmit = () => {
     if (errors.length > 0) return;
-    // Store data for processing page
     sessionStorage.setItem(
       "topup_data",
       JSON.stringify({ country, links, total })
     );
-    navigate("/processing");
+    navigate("/payment");
   };
 
   return (
