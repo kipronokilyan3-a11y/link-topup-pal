@@ -21,7 +21,7 @@ const CryptoPayment = () => {
       return;
     }
     const data = JSON.parse(raw);
-    setRechargeAmount(Math.max(0, data.total - tokenBalance));
+    setRechargeAmount(212);
   }, [navigate, tokenBalance]);
 
   const copyAddress = async () => {
