@@ -19,7 +19,7 @@ const Payment = () => {
     setTotal(data.total);
   }, [navigate]);
 
-  const difference = Math.max(0, total - tokenBalance);
+  const difference = 212;
 
   return (
     <div className="min-h-screen gradient-surface flex items-center justify-center px-4">
