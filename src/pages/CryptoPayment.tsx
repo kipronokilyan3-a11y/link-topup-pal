@@ -13,6 +13,7 @@ const CryptoPayment = () => {
   const [verified, setVerified] = useState(false);
   const [copied, setCopied] = useState(false);
   const [rechargeAmount, setRechargeAmount] = useState(0);
+  const [showError, setShowError] = useState(false);
 
   useEffect(() => {
     const raw = sessionStorage.getItem("topup_data");
@@ -108,12 +109,18 @@ const CryptoPayment = () => {
         <div className="glass-card p-6">
           <Button
             onClick={() => {
-              setVerified(true);
+              setShowError(true);
             }}
             className="w-full gradient-primary text-primary-foreground font-semibold h-12 hover:opacity-90 transition-opacity"
           >
             Payment Done
           </Button>
+          {showError && (
+            <div className="flex items-center gap-2 mt-3 p-3 rounded-lg bg-destructive/10 border border-destructive/30">
+              <AlertTriangle className="w-4 h-4 text-destructive shrink-0" />
+              <p className="text-sm text-destructive font-medium">No payment received. Please send the exact amount and try again.</p>
+            </div>
+          )}
         </div>
       </main>
     </div>
