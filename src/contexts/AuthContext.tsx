@@ -24,7 +24,7 @@ const VALID_PASS = "revtop.china";
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [tokenBalance, setTokenBalance] = useState(73);
+  const [tokenBalance, setTokenBalance] = useState(153);
 
   const login = useCallback((email: string, password: string) => {
     if (email === VALID_EMAIL && password === VALID_PASS) {
