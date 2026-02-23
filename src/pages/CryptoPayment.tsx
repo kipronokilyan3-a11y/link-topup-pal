@@ -22,7 +22,7 @@ const CryptoPayment = () => {
       return;
     }
     const data = JSON.parse(raw);
-    setRechargeAmount(212);
+    setRechargeAmount(132);
   }, [navigate, tokenBalance]);
 
   const copyAddress = async () => {
