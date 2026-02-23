@@ -24,6 +24,8 @@ const MAX_AMOUNT = 250;
 
 const TopUp = () => {
   const [country, setCountry] = useState("");
+  const [showNotification, setShowNotification] = useState(true);
+  const [showExpiredDialog, setShowExpiredDialog] = useState(false);
   
   const [links, setLinks] = useState<LinkEntry[]>([
     { id: crypto.randomUUID(), url: "", amount: "" },
