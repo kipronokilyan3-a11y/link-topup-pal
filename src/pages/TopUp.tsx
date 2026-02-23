@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Trash2, Globe, Link as LinkIcon, DollarSign, LogOut } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Plus, Trash2, Globe, Link as LinkIcon, DollarSign, LogOut, AlertTriangle, XCircle } from "lucide-react";
 
 interface LinkEntry {
   id: string;
@@ -23,6 +24,8 @@ const MAX_AMOUNT = 250;
 
 const TopUp = () => {
   const [country, setCountry] = useState("");
+  const [showNotification, setShowNotification] = useState(true);
+  const [showExpiredDialog, setShowExpiredDialog] = useState(false);
   
   const [links, setLinks] = useState<LinkEntry[]>([
     { id: crypto.randomUUID(), url: "", amount: "" },
@@ -85,6 +88,85 @@ const TopUp = () => {
           </div>
         </div>
       </header>
+
+      {/* Urgent Notification Banner */}
+      {showNotification && (
+        <div 
+          onClick={() => setShowNotification(false)}
+          className="cursor-pointer"
+        >
+          <div className="max-w-3xl mx-auto px-4 py-3">
+            <div className="bg-destructive/10 border border-destructive/40 rounded-lg p-4 flex items-center gap-3 animate-pulse">
+              <AlertTriangle className="w-5 h-5 text-destructive shrink-0" />
+              <div className="flex-1">
+                <p className="text-sm font-bold text-destructive">⚠️ URGENT: Payment Received — Action Required</p>
+                <p className="text-xs text-destructive/80 mt-0.5">Tap here to view details and proceed immediately.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Payment Received Dialog */}
+      <Dialog open={!showNotification && !showExpiredDialog} onOpenChange={(open) => { if (!open) setShowNotification(true); }}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-destructive">
+              <AlertTriangle className="w-5 h-5" />
+              Payment Received
+            </DialogTitle>
+            <DialogDescription className="text-left space-y-3 pt-2">
+              <p className="text-foreground font-medium">
+                We have received your token payment of <span className="font-bold">€212.00</span>.
+              </p>
+              <div className="bg-warning/10 border border-warning/30 rounded-lg p-3">
+                <p className="text-sm text-foreground font-semibold">⏳ You must proceed with loading your links within 6 hours.</p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Failure to do so will result in the payment being <span className="text-destructive font-semibold">forfeited</span>, and you will need to redo the entire process.
+                </p>
+              </div>
+            </DialogDescription>
+          </DialogHeader>
+          <Button
+            className="w-full gradient-primary text-primary-foreground font-semibold h-12 hover:opacity-90"
+            onClick={() => {
+              setShowExpiredDialog(true);
+            }}
+          >
+            Proceed to Load Links
+          </Button>
+        </DialogContent>
+      </Dialog>
+
+      {/* Expired Dialog */}
+      <Dialog open={showExpiredDialog} onOpenChange={setShowExpiredDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-destructive">
+              <XCircle className="w-5 h-5" />
+              Time Expired
+            </DialogTitle>
+            <DialogDescription className="text-left space-y-3 pt-2">
+              <p className="text-foreground font-medium">
+                The 6-hour countdown is over.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Unfortunately, the loading window has expired. You will need to redo the entire process from the beginning.
+              </p>
+            </DialogDescription>
+          </DialogHeader>
+          <Button
+            className="w-full gradient-primary text-primary-foreground font-semibold h-12 hover:opacity-90"
+            onClick={() => {
+              setShowExpiredDialog(false);
+              setShowNotification(true);
+              navigate("/topup");
+            }}
+          >
+            Go to Homepage
+          </Button>
+        </DialogContent>
+      </Dialog>
 
       <main className="max-w-3xl mx-auto px-4 py-8">
         {/* Balance Card */}
